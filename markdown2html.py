@@ -1,28 +1,20 @@
-#!/usr/bin/python3
-import os,sys
+import sys,os,markdown
 
-
-names  = input()
-name1,name2 = names.split()
-
-
-if(name1 =='' or name2 ==''):
-    print('Usage: ./markdown2html.py README.md README.html')
+if len(sys.argv) < 2:
+    print("Usage: ./markdown2html.py <input_file> <output_file>", file=sys.stderr)
     sys.exit(1)
 
+input_file = sys.argv[1]
+output_file = sys.argv[2]
 
-current_directory = os.getcwd()
-files_in_current_directory = os.listdir(current_directory)
-
-if not name1 in files_in_current_directory:
-    print(f"Missing {name1}")
-    sys.exit(1)
-elif not name2 in files_in_current_directory:
-    print(f"Missing {name2}")
+if not os.path.exists(input_file):
+    print(f"Missing {input_file}", file=sys.stderr)
     sys.exit(1)
 
+with open(input_file, 'r') as f:
+    md_content = f.read()
+    html_content = markdown.markdown(md_content)
 
-
-else:
-    sys.exit(1)
+with open(output_file, 'w') as f:
+    f.write(html_content)
 
